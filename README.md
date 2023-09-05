@@ -51,7 +51,8 @@ El proyecto se divide en las siguientes etapas:
 
 
 ## Explicación del proyecto 📸
-	
+
+Puede ver el video con la aplicacion del deployment en render en este enlace(https://drive.google.com/file/d/1IVym2xbm6iaelyxWkf9Q-QiABmWnB5lB/view?usp=drive_link)
 
 ## Instrucciones de Uso 📋
 
