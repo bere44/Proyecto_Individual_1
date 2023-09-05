@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse,HTMLResponse
 import pandas as pd
 import ast
-from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI(title= 'Games-Steam-API')
