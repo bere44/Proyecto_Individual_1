@@ -3,9 +3,9 @@ PI MLOps - STEAM
 game_items.csv
 game_reviews.csv
 steam_games.csv
-df_counter_func_2.csv
 australian_user_reviews.json
 australian_users_items.json
 output_steam_games.json
 game_reviews2.csv
 gener_rank.csv
+ml_dataset.csv

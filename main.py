@@ -148,7 +148,7 @@ def userforgenre( genero : str ):
 
 # Endpoint de la función Developer: Recibe un desarrollador
 # Devuelve la cantidad total de items y el porcentaje de items gratis por cada año
-@app.get("/developer/{developer}", tags=['Items gratis por año segun el Developer'])
+@app.get("/developer/{developer}", tags=['Funcion items por año segun developer'])
 def developer(developer : str):
     '''
     **Developer:** Recibe un string con el nombre del desarrollador. 
@@ -177,3 +177,71 @@ def developer(developer : str):
 
     else:
         return JSONResponse(status_code=404, content={'error': f"Developer {developer} not found"})
+    
+
+
+
+
+# Endpoint de la función game_recommendations: Recibe el id de un videojuego en formato int
+# Retorna una lista con 5 videojuegos recomendados
+@app.get("/game_recommendations/{game_id}",tags=['Funcion de recomendacion de juego'])
+def game_recommendations( game_id : int ):
+    '''
+    **Game Recommendations:** Ingresa el **Game id** de un juego en formato int y la función te regresa 
+    las 5 mejores recomendaciones basado en ese juego
+        Ejemplo: 47810</br>
+
+            {
+            "titulo_buscado": "Dragon Age: Origins - Ultimate Edition",
+            "results": 
+                [
+                {
+                "game_id": 47730,
+                "title": "Dragon Age™: Origins Awakening"
+                },
+                {
+                "game_id": 17450,
+                "title": "Dragon Age: Origins"
+                },
+                {
+                "game_id": 17460,
+                "title": "Mass Effect"
+                },
+                {
+                "game_id": 7110,
+                "title": "Jade Empire™: Special Edition"
+                },
+                {
+                "game_id": 24980,
+                "title": "Mass Effect 2"
+                }
+            ]
+            }
+    '''
+    # carga de archivos
+    df = pd.read_csv("modelo.csv")
+
+    if game_id not in df['id'].values:
+        return JSONResponse(status_code=404,content={'error':f"Game Id '{game_id}' not found"})
+
+    # Obtiene la lista de recomendaciones
+    result = df[df['id'] == game_id]['recommends'].iloc[0]
+
+    # Conversion a lista
+    try:
+        result = ast.literal_eval(result)
+    except (SyntaxError, ValueError):
+        # retorno error
+        return JSONResponse(status_code=404,content={'error':f"Game Id '{game_id}' not found"})
+
+    response =[]
+    item_buscado = df[df['id'] == game_id].iloc[0]
+
+    for item_id in result:
+        # Obtiene la información del juego recomendado
+        item_info = df[df['id'] == item_id].iloc[0]  
+        #append a la lista de salida
+        response.append({'game_id': int(item_info['id']), 
+                         'title': item_info['title']})
+    dict_respuesta = {'titulo_buscado': item_buscado['title'], 'results':response}  
+    return JSONResponse(status_code=200,content=dict_respuesta)
