@@ -180,6 +180,38 @@ def developer(developer : str):
     
 
 
+# Endpoint de Sentiment Analysis: Recibe un str con el año que deseas evaluar
+# Retorna el análisis
+@app.get("/sentimentanalysis/{year}",tags=['Reviews por año'])
+def sentiment_analysis(year : str):
+    '''
+    **Sentiment Analysis:** Recibe un string con el año que deseas evaluar y retorna la cantidad de reseñas</br>
+    positivas, negativas y neutrales </br></br>
+
+    Ejemplo: 2010</br>
+
+        {
+        "results": [
+            {
+            "year_released": "2010",
+            "Negative": 265,
+            "Neutral": 403,
+            "Positive": 1341
+            }]
+        }
+    '''
+    year = year.strip()
+    df = pd.read_csv('sentiment_analysis.csv')
+    df['year_released'] = df['year_released'].astype(str)
+
+    if df['year_released'].str.contains(year).any():
+        response = df[df['year_released'] == year].to_dict(orient='records')
+        return JSONResponse(status_code=200,content={"results":response})
+
+    else:
+        return JSONResponse(status_code=404,content={"error":f"Year '{year}' not found"})
+
+
 
 
 # Endpoint de la función game_recommendations: Recibe el id de un videojuego en formato int
