@@ -27,10 +27,7 @@ def userdata(user_id : str):
     dfuser = pd.read_csv('df-funcion-1.csv')
     user_data = dfuser[dfuser['user_id'] == user_id]
 
-    if len(user_data) == 0:
-        return JSONResponse(status_code=404,content={'error': f"User with id '{user_id}' not found"})
-
-    response = user_data.to_dict(orient='records')
+    
     return JSONResponse(status_code=200,content={"results":response})
 
 
