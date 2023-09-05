@@ -19,6 +19,8 @@ _Este proyecto es parte de la evaluación de conocimientos del bootcamp de Henry
 
 -   **Ml.ipynb**: Archivo Jupyter Notebook que contiene la creación y evaluación del modelo de          aprendizaje automático.
 
+-   **Archivos csv**: Son los archivos donde estan los dataset reducidos para usar las diferentes funciones que hay en los archivos de jupiter notebooks.
+
 -   **src**: Carpeta que contiene archivos fuente del proyecto.
 
 -   **Main.py**: Archivo principal del proyecto, este archivo se usa para correr el Api.
