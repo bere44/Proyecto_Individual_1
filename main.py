@@ -77,3 +77,38 @@ def countreviews(date1,date2 : str):
     response = {'cantidad_usuarios':cantidad_usu_rese, 'porcentaje_recomendacion':round(porce_recom,2)}
     
     return JSONResponse(status_code=200, content={"results":response})
+
+
+# Endpoint de la función Género: Se ingresa un genero en formato str
+# Devuelve un objeto json con el genero cantidad de horas y rank
+# en base de las horas jugadas totales de todos los géneros
+@app.get("/genre/{genre}",tags=['Genre'])
+def genre(genre : str):
+    '''
+    **Genre:** Recibe un string con el nombre del género a evaluar</br>
+    Devuelve el rank de las categorías con más horas jugadas por los usuarios</br>
+    y su total de horas jugadas.</br><br/>
+
+    Ejemplo: RPG
+
+        {
+        "results": [
+            {
+            "Genre": "rpg",
+            "Total_Hours": 1041022718,
+            "Rank": 3
+            }]
+        }
+
+    '''
+    genre = genre.lower().strip()
+    df_genre = pd.read_csv('gener_rank.csv')
+    
+    if df_genre['Genre'].str.contains(genre).any():
+        genre_info = df_genre[df_genre['Genre']==genre]
+        response = genre_info.to_dict(orient='records')
+
+    else:
+        return JSONResponse(status_code=404,content={'error':f"Genre '{genre}' not found"})
+
+    return JSONResponse(status_code=200,content={"results":response})
