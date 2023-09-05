@@ -55,7 +55,7 @@ El proyecto se divide en las siguientes etapas:
 
 1.  Clona el repositorio en tu máquina local:
 
-git clone https://github.com/tuusuario/nombre-repositorio.git
+git clone https://github.com/bere44/Proyecto_Individual_1.git
 
 2.  Instala las dependencias necesarias:
 
