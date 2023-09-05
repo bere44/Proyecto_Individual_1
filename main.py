@@ -102,7 +102,7 @@ def genre(genre : str):
 
     '''
     genre = genre.lower().strip()
-    df_genre = pd.read_csv('gener_rank.csv')
+    df_genre = pd.read_csv('df-funcion-3.csv')
     
     if df_genre['Genre'].str.contains(genre).any():
         genre_info = df_genre[df_genre['Genre']==genre]
