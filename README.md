@@ -1,3 +1,4 @@
+<p align=center><img src=https://raw.githubusercontent.com/bere/Proyecto_Individual_1/master/src/header_ctms_juegos.jpg><p>
 
 # Proyecto Individual Henry - Recomendación de videojuegos
 
