@@ -7,20 +7,6 @@ import ast
 app = FastAPI(title= 'Games-Steam-API')
 
 
-
-# ROOT DE LA WEB
-@app.get("/")
-def read_root():
-    '''
-    Root de la api donde debe regresar una pagina html
-      Con la descripción de como usar los endpoints
-    '''
-    with open("index.html", "r", encoding="utf-8") as file:
-        response = file.read()
-    
-    return HTMLResponse(status_code=200,content=response)
-
-
 # Endpoint de la función user_data: Recibe un string con el user_id
 # Retorna un resumen del mismo con la cantidad de dinero gastada, 
 # los items adquiridos y el porcentaje de juegos recomendados 
