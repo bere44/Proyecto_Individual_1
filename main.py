@@ -24,10 +24,13 @@ def userdata(user_id : str):
         "cantidad_items": 58
         }
     '''
-    dfuser = pd.read_csv('df-funcion-1.csv')
-    user_data = dfuser[dfuser['user_id'] == user_id]
+    df_user = pd.read_csv("df-funcion-1.csv")
+    user_data = df_user[df_user['user_id'] == user_id]
 
-    
+    if len(user_data) == 0:
+        return JSONResponse(status_code=404,content={'error': f"User with id '{user_id}' not found"})
+
+    response = user_data.to_dict(orient='records')
     return JSONResponse(status_code=200,content={"results":response})
 
 
@@ -94,3 +97,83 @@ def genre(genre : str):
         return JSONResponse(status_code=404,content={'error':f"Genre '{genre}' not found"})
 
     return JSONResponse(status_code=200,content={"results":response})
+
+
+# Endpoint de la función user_for_genre: Recibe un string para el genero
+# Regresa el top5 de los usuarios con mas horas de juego
+@app.get("/userforgenre/{genero}",tags=['Funcion top User x Genre'])
+def userforgenre( genero : str ):
+    '''
+    **User for Genre:** Recibe un string con el género que se desea evaluar</br>
+    Devuelve una lista ordenada de los usuarios ("User Id" y "User Url") con más horas jugadas según el ranking de cada género</br></br>
+
+    Ejemplo: Indie
+
+        {
+        "results": [
+            {
+            "user_id": "wolop",
+            "user_url": "http://steamcommunity.com/id/wolop"
+            },
+            {
+            "user_id": "76561198039832932",
+            "user_url": "http://steamcommunity.com/profiles/76561198039832932"
+            },
+            {
+            "user_id": "tsunamitad",
+            "user_url": "http://steamcommunity.com/id/tsunamitad"
+            },
+            {
+            "user_id": "jimmynoe",
+            "user_url": "http://steamcommunity.com/id/jimmynoe"
+            },
+            {
+            "user_id": "lildoughnut",
+            "user_url": "http://steamcommunity.com/id/lildoughnut"
+            }
+        ]
+        }
+    '''
+    genero = genero.lower().strip()
+    df1 = pd.read_csv('df-funciones-4.csv')
+
+    if genero not in df1.columns:
+        return JSONResponse(status_code=404,content={'error':f"Genre '{genero}' not found"})
+    
+    top5 = df1.sort_values(by=genero,ascending=False).head(5).reset_index()
+    response = top5[['user_id','user_url']].to_dict(orient='records')
+
+    return JSONResponse(status_code=200,content={"results":response})
+
+
+# Endpoint de la función Developer: Recibe un desarrollador
+# Devuelve la cantidad total de items y el porcentaje de items gratis por cada año
+@app.get("/developer/{developer}", tags=['Items gratis por año segun el Developer'])
+def developer(developer : str):
+    '''
+    **Developer:** Recibe un string con el nombre del desarrollador. 
+    Devuelve una lista de cada año donde el desarrollador publicó juegos con su porcentaje de juegos free to play por año
+
+    Ejemplo: Mortis Games
+
+        {
+        "results": [
+            {
+            "release_year": 2017,
+            "item_count": 3,
+            "porcentaje_free": 33.33
+            }
+        ]
+        }
+    '''
+    df = pd.read_csv("df-funcion-5.csv")
+    developer = developer.strip().lower()
+
+    if df['developer'].str.contains(developer).any():
+        data = df[df['developer'] == developer]
+        data = data.sort_values('release_year', ascending=False)
+        response = data[['release_year','item_count','porcentaje_free']].to_dict(orient='records')
+        return JSONResponse(status_code=200, content={"results":response})
+
+    else:
+        return JSONResponse(status_code=404, content={'error': f"Developer {developer} not found"})
