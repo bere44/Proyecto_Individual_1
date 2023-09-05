@@ -10,7 +10,7 @@ app = FastAPI(title= 'Games-Steam-API')
 # Endpoint de la función user_data: Recibe un string con el user_id
 # Retorna un resumen del mismo con la cantidad de dinero gastada, 
 # los items adquiridos y el porcentaje de juegos recomendados 
-@app.get("/userdata/{user_id}",tags=['User'])
+@app.get("/userdata/{user_id}",tags=['Funcion User'])
 def userdata(user_id : str):
     '''
     **User Data:**Recibe un string con el **"User Id"** y devuelve un summary del user</br>
@@ -24,8 +24,8 @@ def userdata(user_id : str):
         "cantidad_items": 58
         }
     '''
-    df_user = pd.read_csv('df-funcion-1-1.csv')
-    user_data = df_user[df_user['user_id'] == user_id]
+    dfuser = pd.read_csv('df-funcion-1.csv')
+    user_data = dfuser[dfuser['user_id'] == user_id]
 
     if len(user_data) == 0:
         return JSONResponse(status_code=404,content={'error': f"User with id '{user_id}' not found"})
@@ -37,7 +37,7 @@ def userdata(user_id : str):
 # Endpoint de la función countreviews: Recibe dos fechas en formato str
 # Retorna la cantidad de usuarios que hicieron reviews entre esas fechas
 # y el porcentaje de recommended 
-@app.get("/countreviews/{date1}/{date2}", tags=['Reviews'])
+@app.get("/countreviews/{date1}/{date2}", tags=['Funcion Fechas de Reviews'])
 def countreviews(date1,date2 : str):
     '''
     **Count Reviews:** Recibe dos **fechas** en formato string y devuelve
@@ -67,7 +67,7 @@ def countreviews(date1,date2 : str):
 # Endpoint de la función Género: Se ingresa un genero en formato str
 # Devuelve un objeto json con el genero cantidad de horas y rank
 # en base de las horas jugadas totales de todos los géneros
-@app.get("/genre/{genre}",tags=['Genre'])
+@app.get("/genre/{genre}",tags=['Funcion Genre'])
 def genre(genre : str):
     '''
     **Genre:** Recibe un string con el nombre del género a evaluar</br>
