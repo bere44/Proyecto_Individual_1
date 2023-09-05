@@ -5,8 +5,8 @@ import ast
 from fastapi.staticfiles import StaticFiles
 
 
-app = FastAPI(title= 'Steam-API')
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app = FastAPI(title= 'Games-Steam-API')
+
 
 
 # ROOT DE LA WEB
